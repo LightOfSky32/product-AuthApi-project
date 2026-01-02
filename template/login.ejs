@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            height: 100vh;
+            background-color: rgb(79, 191, 243);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #container {
+            background-color: rgb(255, 249, 196);
+            padding: 2.5em;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            min-width: 300px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 16px;
+            font-weight: bold;
+            color: rgb(32, 30, 30);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgb(214, 149, 118);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: rgb(34, 113, 231);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: rgb(13, 13, 218);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: rgb(0, 110, 255);
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <form id="container" action="/api/auth/login" method="post">
+        <label for="email-input">Email:</label>
+        <input id="email-input" type="email" name="email" placeholder="Email here" required>
+        <br>
+        <label for="password-input">password</label>
+        <input id="password-input" type="password" name="password" placeholder="password" required>
+        <br>
+        <button id="submit-btn" type="submit">Login</button>
+    </form>
+    <p>No account? <a href="/register">Register</a></p>
+</body>
+
+</html>

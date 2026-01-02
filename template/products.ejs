@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1.0" />
+    <title>Products</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 30px;
+            color: #333;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .product {
+            background: #fff;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .category {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 6px;
+        }
+
+        .description {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #0077cc;
+        }
+
+        .date {
+            font-size: 12px;
+            color: #999;
+            margin-top: 6px;
+        }
+
+        .empty {
+            color: #777;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Products</h1>
+    <% if (products.length===0) { %>
+        <p class="empty">No products found.</p>
+        <% } %>
+
+        <% products.forEach(product=> { %>
+            <div class="product">
+                <div class="title">
+                    <%= product.title %>
+                </div>
+                <div class="category">
+                    <%= product.category %>
+                </div>
+                <div class="description">
+                    <%= product.description %>
+                </div>
+            
+                <div class="price">
+                    ₦<%= product.price %>
+                </div>
+            
+                <div class="date">
+                    Added on <%= product.createdAt.toDateString() %>
+                </div>
+            </div>
+        <% }) %>
+
+</body>
+
+</html>
