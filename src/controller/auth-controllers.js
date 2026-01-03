@@ -191,10 +191,10 @@ const resetPassword = async (req, res) => {
 };
 
 const verifyOtp = async (req, res) => {
-    const { email, otp } = req.body;
     try {
-        if (!otp) {
-            return res.status(400).json({ message: "OTP is required" });
+        const { email, otp } = req.body || {};
+        if (!email || !otp) {
+            return res.status(400).json({ message: "Email and OTP is required" });
         }
         const user = await User.findOne({ email, otp });
         if (!user) {
