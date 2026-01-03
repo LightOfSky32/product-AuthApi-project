@@ -22,10 +22,10 @@ transporter.verify((error, success) =>{
     }
 });
 
-const sendWelcomeEmail = async ({email, name, loginUrl}) => {
+const sendWelcomeEmail = async ({email, name, otp}) => {
     try{
         const templatePath = path.join(__dirname, "../../template/welcome-email.ejs");
-        const html = await ejs.renderFile(templatePath, {name, email, loginUrl});
+        const html = await ejs.renderFile(templatePath, {name, email, otp});
 
         const mailOptions = {
             from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_USER}>`,
@@ -43,15 +43,14 @@ const sendWelcomeEmail = async ({email, name, loginUrl}) => {
     }
 };
 
-const sendLoginNotification = async({ email, name, location, device, resetPasswordUrl }) => {
+const sendLoginNotification = async({ name, email, location, device, }) => {
     try {
-        const templatePath = path.join(__dirname, "../../template/login-notif.ejs");
+        const templatePath = path.join(__dirname, "../../template/login-notifs.ejs");
         const html = await ejs.renderFile(templatePath, {
             name,
             email,
             location,
-            device,
-            resetPasswordUrl
+            device
         });
 
         const mailOptions = {
@@ -70,14 +69,14 @@ const sendLoginNotification = async({ email, name, location, device, resetPasswo
     }
 };
 
-const sendPasswordResetEmail = async ({ email, name, resetToken, resetUrl, expiryTime }) => {
+const sendPasswordResetEmail = async ({ email, name, resetToken, otp, expiryTime }) => {
     try {
         const templatePath = path.join(__dirname, "../../template/forgot-password.ejs");
         const html = await ejs.renderFile(templatePath, {
             name,
             email,
             resetToken,
-            resetUrl,
+            otp,
             expiryTime
         });
 
@@ -97,14 +96,13 @@ const sendPasswordResetEmail = async ({ email, name, resetToken, resetUrl, expir
     }
 };
 
-const sendPasswordResetSuccessEmail = async ({ email, name, location, loginUrl }) => {
+const sendPasswordResetSuccessEmail = async ({ email, name, location }) => {
     try {
         const templatePath = path.join(__dirname, "../../template/password-reset-success.ejs");
         const html = await ejs.renderFile(templatePath, {
             name,
             email,
-            location,
-            loginUrl
+            location
         });
 
         const mailOptions = {
@@ -123,9 +121,36 @@ const sendPasswordResetSuccessEmail = async ({ email, name, location, loginUrl }
     }
 };
 
+const resendOtpEmail = async ({ email, name, otp }) => {
+    try {
+        const templatePath = path.join(__dirname, "../../template/resend-otp.ejs");
+        const html = await ejs.renderFile(templatePath, {
+            name,
+            email,
+            otp,
+        });
+
+        const mailOptions = {
+            from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: "Resend Otp",
+            html,
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Otp resend email sent:", info.messageId);
+        return { success: true, messageId: info.messageId };
+    } catch (error) {
+        console.error("Failed to resend otp email:", error);
+        throw error;
+    }
+};
+
+
 module.exports = {
     sendWelcomeEmail,
     sendLoginNotification,
     sendPasswordResetEmail,
     sendPasswordResetSuccessEmail,
+    resendOtpEmail
 }

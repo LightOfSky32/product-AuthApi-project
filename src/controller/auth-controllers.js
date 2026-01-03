@@ -2,13 +2,15 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const sendEmail = require("../utils/email-services");
+/*
 const {
     sendWelcomeEmail,
     sendLoginNotification,
     sendPasswordResetEmail,
-    sendPasswordResetSuccessEmail
+    sendPasswordResetSuccessEmail,
+    resendOtpEmail
 } = require("../utils/email-services");
+ */
 const crypto = require("crypto");
 //const { token } = require("morgan");
 
@@ -37,15 +39,15 @@ const register = async (req, res) => {
             otpExpiry,
         });
         await newUser.save();
-
+        /*
         sendWelcomeEmail({
             email,
             name,
-            loginUrl: process.env.LOGIN_URL // || localhostUrl here
+            otp
         }).catch(error => console.error('Welcome email failed:', error));
+        */
 
-        //added otp removed here so it can be verified from the email 
-        return res.status(201).json({ message: "User created successfully", });
+        return res.status(201).json({ message: "User created successfully" });
     } catch (error) {
         console.error("Error during signup:", error);
         return res.status(500).json({ message: "Internal server error" });
@@ -77,14 +79,15 @@ const login = async (req, res) => {
             expiresIn: "1h"
         }) 
 
+        /*
         sendLoginNotification({
             name: user.name,
             email: user.email,
             location: req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'Unknown',
             device: req.headers['user-agent'] || 'Web Browser',
-            resetPasswordUrl: process.env.FORGOT_PASSWORD_URL 
         }).catch(error => console.error('login notification failed:', error));
 
+        */
         //use token to json object to test out the admin permisson point.
 
         return res.status(200).json({ message: "Login successful", token });
@@ -118,22 +121,14 @@ const forgetPassword = async (req, res) => {
         user.otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
         await user.save();
 
-        /*await sendEmail(\
-            email,
-            "password Reset OTP",
-            `your otp for password reset is ${otp}`
-        ); */
-
-        const resetUrl = `${process.env.FRONTEND_URL }/reset-password?token=${resetToken}`;
-
+        /*
         sendPasswordResetEmail({
             email: user.email,
-            password: user.password,
             resetToken,
-            resetUrl,
+            otp,
             expiryTime: "1 hour"
         }).catch(error => console.error("Password reset email failed:", error));
-
+        */
         return res.status(200).json({ message: "Password reset instructions sent to email", /* otp */ });
     } catch (error) {
         console.error("Error during forget password:", error);
@@ -160,7 +155,8 @@ const resetPassword = async (req, res) => {
                 return res.status(404).json({ message: "Invalid or expired reset token" });
             }
         } else {
-            user = await User.findOne({ otp });
+            const { email, otp } = req.body;
+            user = await User.findOne({ email, otp, otpExpiry: { $gt: Date.now() } });
             if (!user) {
                 return res.status(404).json({ message: "invalid OTP" });
             }
@@ -179,12 +175,13 @@ const resetPassword = async (req, res) => {
 
         await user.save();
 
+        /*
         sendPasswordResetSuccessEmail({
             email: user.email,
             name: user.name,
             location: req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'Unknown',
-            loginUrl: process.env.LOGIN_URL 
         }).catch(error => console.error('Password reset success email failed:', error));
+        */
 
         return res.status(200).json({ message: "Password reset successful" });
     } catch (error) {
@@ -194,12 +191,12 @@ const resetPassword = async (req, res) => {
 };
 
 const verifyOtp = async (req, res) => {
-    const { otp } = req.body;
+    const { email, otp } = req.body;
     try {
         if (!otp) {
             return res.status(400).json({ message: "OTP is required" });
         }
-        const user = await User.findOne({ otp });
+        const user = await User.findOne({ email, otp });
         if (!user) {
             return res.status(404).json({ message: "Invalid OTP" });
         }
@@ -237,7 +234,16 @@ const resendOtp = async (req, res) => {
         user.otp = otp;
         user.otpExpiry = otpExpiry;
         await user.save();
-        return res.status(200).json({ message: "OTP resent successfully", otp });
+
+        /*
+        resendOtpEmail({
+            email: user.email,
+            name: user.name,
+            otp
+        }).catch(error => console.error('Welcome email failed:', error));
+        */
+
+        return res.status(200).json({ message: "OTP resent successfully" });
     }
     catch (error) {
         console.error("Error during resending OTP:", error);

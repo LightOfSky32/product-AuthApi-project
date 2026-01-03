@@ -7,22 +7,22 @@
     <title>Register</title>
     <style>
         body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             margin: 0;
             height: 100vh;
             background-color: rgb(79, 191, 243);
             font-family: Arial, Helvetica, sans-serif;
+            padding: 20px;
         }
-
+        h1, p{
+            text-align: center;
+        }
         #container {
             background-color: rgb(255, 249, 196);
             padding: 2.5em;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 80%;
-            min-width: 300px;
+            min-width: 200px;
         }
 
         label {
@@ -81,7 +81,7 @@
         <br>
         <button id="submit-btn" type="submit">Register</button>
     </form>
-    <p>Already have an account? <a href="/template/login.ejs">Login</a></p>
+    <p>Already have an account? <a href="/logIn">Login</a></p>
 </body>
 
 </html>

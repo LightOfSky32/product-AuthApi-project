@@ -7,7 +7,7 @@ connectDatabase();
 
 const authRoutes = require("./src/routes/auth-routes");
 const productRoutes = require("./src/routes/product-routes");
-const cartRoutes = require(".src/routes/cart-routes")
+const cartRoutes = require("./src/routes/cart-routes");
 const tempRoutes = require("./src/routes/temp-routes");// front end kind of view routes
 const port = process.env.PORT
 

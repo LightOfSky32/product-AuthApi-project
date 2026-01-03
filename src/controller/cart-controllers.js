@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../models/user");
-const Product = reqire("../models/product")
+const Product = require("../models/product");
 
 const addToCart  = async (req, res) => {
     try {
@@ -15,11 +15,11 @@ const addToCart  = async (req, res) => {
         if (itemIndex > -1) {
             user.cart[itemIndex].quantity += 1;
         } else {
-            user.cart.push({ message: "Product added to cart", cart: user.cart });
+            user.cart.push({ product: productId, quantity: 1, });
         }
 
         await user.save();
-        res.status(201).json(product);
+        res.status(200).json({ message: "Product added to cart", cart: user.cart });
     }
     catch (error) {
         console.log(error);

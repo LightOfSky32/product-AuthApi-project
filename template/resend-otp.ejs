@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resend otp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: rgb(77, 175, 214);
+            color: whitesmoke;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .header h1 {
+            margin-bottom: 5px;
+            font-size: 26px;
+        }
+
+        .header p {
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 30px;
+            color: #555;
+        }
+
+        .otp-box {
+            background: rgb(226, 234, 238);
+            border: 2px solid rgb(56, 157, 252);
+            padding: 25px;
+            border-radius: 8px;
+            justify-content: center;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .otp {
+            font-size: 28px;
+            font-weight: 700;
+            color: #38b6ff;
+            letter-spacing: 3px;
+            padding: 15px;
+            border-radius: 6px;
+            display: inline-block;
+            background: #fff;
+            margin: 10px 0;
+        }
+
+        .greeting {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box {
+            background: #f0f4f8;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .highlight-box h3 {
+            margin-bottom: 10px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 20px 0;
+            background: #0077cc;
+            color: whitesmoke;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>Hello <%= name %></h1>
+            <p>we recieved a request to resend otp
+            </p>
+        </div>
+        <div class="content">
+            <p class="greeting">Hello <%= name %>,</p>
+            <p>We received a request to resend otp. Use the otp below to verify your account.</p>
+
+            <div class="highlight-box">
+                <h2>Your Account Details</h2>
+                <p><strong>Email:</strong>
+                    <%= email %>
+                </p>
+                <p><strong>Registration Date:</strong>
+                    <%= new Date().toLocaleDateString('en-US', { year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+                </p>
+            </div>
+
+            <center>
+                <div class="otp-box">
+                    <h2>New otp</h2>
+                    <div class="otp">
+                        <%= otp %>
+                    </div>
+                    <p>This OTP will expire in 10 minutes. copy this to verify your email address</p>
+                </div>
+            </center>
+
+            <div class="highlight-box">
+                <h3>Security Tips</h3>
+                <ul>
+                    <li>If you didn't request please ignore this email</li>
+                    <li>Keep your password safe and don't share it</li>
+                    <li>Enable two-factor authentication</li>
+                    <li>Contact support if you notice suspicious activity</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>Thank you for choosing our platform!</p>
+        <%= new Date().getFullYear() %> SkyTech. All rights reserved.
+    </footer>
+</body>
+
+</html>

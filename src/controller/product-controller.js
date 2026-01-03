@@ -17,7 +17,7 @@ const createProducts = async (req, res) => {
 const getProducts = async (req, res) => {
     try {
         const product = await Product.find().populate("user", "name");
-        res.status(201).json(product);
+        res.status(200).json(product);
     }
     catch (error) {
         console.log(error);
@@ -30,12 +30,13 @@ const getProducts = async (req, res) => {
 const getSingleProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const singleProduct = await Product.findById(id);
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 message: "Invalid product ID"
             });
         }
+
+        const singleProduct = await Product.findById(id);
         if (!singleProduct) {
             return res.status(404).json({
                 message: "item not found"
@@ -55,7 +56,7 @@ const searchByitemTitle = async (req, res) => {
     try {
         const { item } = req.query;
         if (!item) {
-            return res.status(404).json({
+            return res.status(400).json({
                 message: "Item with that name not found."
             });
         }
@@ -79,7 +80,7 @@ const searchByCategory = async (req, res) => {
     try {
         const { category } = req.query;
         if (!category) {
-            return res.status(404).json({
+            return res.status(400).json({
                 message: "items in that category not found."
             });
         }
