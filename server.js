@@ -1,7 +1,4 @@
 const express = require("express");
-const app = express();
-app.use(express.json());
-
 const dotenv = require("dotenv");
 const connectDatabase = require("./src/config/db");
 const morgan = require("morgan");
@@ -14,6 +11,8 @@ const cartRoutes = require("./src/routes/cart-routes");
 const tempRoutes = require("./src/routes/temp-routes");// front end kind of view routes
 const port = process.env.PORT
 
+const app = express();
+app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.urlencoded({extended: true})); /* */
 
@@ -31,4 +30,4 @@ app.use("/api/cart", cartRoutes);
 
 app.listen(port, () => {
     console.log(`Server is  running on port ${port}`);
-});YY
+});
