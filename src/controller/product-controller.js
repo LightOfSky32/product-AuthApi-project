@@ -118,11 +118,19 @@ const searchByCategory = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const productId = req.params.id
+            ?.toString()
+            .replace(/[\r\n\t]/g, "")// removes %0A and cleans additions from postman
+            .trim();
+
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            return res.status(400).json({ message: "Invalid product ID" });
+        }
+        const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ message: "Item not found" });
         }
-        const isOwner = product.user.toString() === req.user.userId;
+        const isOwner = product.user.toString() === req.user.userId
         const isAdmin = req.user.role === "admin";
         if (!isOwner && !isAdmin) {
             return res.status(403).json({
@@ -145,7 +153,16 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const productId = req.params.id
+            ?.toString()
+            .replace(/[\r\n\t]/g, "")
+            .trim();
+
+        if (!mongoose.Types.ObjectId.isValid(productId)) {
+            return res.status(400).json({ message: "Invalid product ID" });
+        }
+
+        const product = await Product.findById(productId);
         if (!product){
             return res.status(404).json({ message: "Item not found" });
         }

@@ -250,6 +250,7 @@ DELETE /api/products/<insert productid>
 - i had a bunch of typo errors with spellings and missed brackets
 
 - i had error while testing out the create endpoint, more because i didn't fill all the required parameters
+- i ran into issues where postman would add extra characters to my request while i was testing the search by title and category end point. This was fixed 
 
 there are like 2 or three others but i think this is good.
 
