@@ -8,8 +8,8 @@ router.get("/register", (req, res) => {
     res.render("register")
 });
 
-router.get("/logIn", (req, res) => {
-    res.render("logIn")
+router.get("/signin", (req, res) => {
+    res.render("signin")
 });
 
 router.get("/products", /*isAuth*/ async (req, res) => {
