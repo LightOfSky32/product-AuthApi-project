@@ -54,18 +54,23 @@ const getSingleProduct = async (req, res) => {
 
 const searchByitemTitle = async (req, res) => {
     try {
-        const { item } = req.query;
-        if (!item) {
-            return res.status(400).json({
+        const search = req.query.title;
+        if (!search) {
+            return res.status(404).json({
                 message: "Item with that name not found."
             });
         }
         const products = await Product.find({ 
             $or: [
-                {title: { $regex: item, $options: "i" }},
-                { description: { $regex: item, $options: "i" } }
+                {title: { $regex: search, $options: "i" }},
+                { description: { $regex: search, $options: "i" } }
             ]
          }); //helps to search a word in description or title
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No products found" });
+        }
+
         res.status(200).json(products);
     }
     catch (error) {
@@ -78,13 +83,17 @@ const searchByitemTitle = async (req, res) => {
 
 const searchByCategory = async (req, res) => {
     try {
-        const { category } = req.query;
+        const category = req.query.category;
         if (!category) {
-            return res.status(400).json({
+            return res.status(404).json({
                 message: "items in that category not found."
             });
         }
         const products = await Product.find({ category: { $regex: category, $options: "i" } });
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No products found" });
+        }
+
         res.status(200).json(products);
     }
     catch (error) {
