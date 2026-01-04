@@ -14,7 +14,7 @@ const addToCart  = async (req, res) => {
         }
 
         const product = await Product.exists({ _id: productId });
-        if (!productExists) {
+        if (!product) {
             return res.status(404).json({ message: "Product does not exist" });
         }
 
@@ -55,7 +55,7 @@ const getitemsinCart = async (req, res) => {
             return sum + item.product.price * item.quantity;
         }, 0);
 
-        res.status(201).json(user.cart, total);
+        res.status(200).json({ cart: user.cart, total });
     }
     catch (error) {
         console.log(error);
@@ -105,7 +105,7 @@ const updateQuantity = async (req, res) => {
     const quantity = Number(req.body.quantity);
 
 
-    if (!mongoose.Types.ObjectId.isValid(productId) || !!Number.isInteger(quantity) || quantity < 1) {
+    if (!mongoose.Types.ObjectId.isValid(productId) || !Number.isInteger(quantity) || quantity < 1) {
         return res.status(400).json({ message: "Product ID and valid quantity required" });
     }
 
