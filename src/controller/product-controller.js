@@ -54,7 +54,13 @@ const getSingleProduct = async (req, res) => {
 
 const searchByitemTitle = async (req, res) => {
     try {
-        const search = req.query.title;
+        const search = req.query.title
+            ?.toString()
+            .normalize("NFKD")
+            .replace(/[\r\n\t]/g, "") // removes %0A, %0D, %09
+            .replace(/\s+/g, " ") // collapses extra spaces
+            .trim();
+
         if (!search) {
             return res.status(404).json({
                 message: "Item with that name not found."
@@ -83,7 +89,12 @@ const searchByitemTitle = async (req, res) => {
 
 const searchByCategory = async (req, res) => {
     try {
-        const category = req.query.category;
+        const category = req.query.category
+            ?.toString() //added these to stop post man error when sending requests
+            .normalize("NFKD")
+            .replace(/[\r\n\t]/g, "")
+            .replace(/\s+/g, " ") 
+            .trim();
         if (!category) {
             return res.status(404).json({
                 message: "items in that category not found."
